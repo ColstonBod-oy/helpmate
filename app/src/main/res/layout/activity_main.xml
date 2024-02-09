@@ -1,47 +1,102 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:keepScreenOn="true">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/previous_state"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:textSize="24sp"
-        android:padding="10dp"
-        android:textColor="@color/textColor" />
+        android:keepScreenOn="true"
+        android:orientation="vertical">
 
-    <TextView
-        android:text="@string/status_unknown"
-        android:id="@+id/current_state"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:textSize="24sp"
-        android:padding="10dp"
-        android:textColor="@color/textColor"
-        android:background="@color/state_unknown"/>
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top|end"
+            android:padding="10dp"
+            android:textColor="@android:color/black"
+            android:textSize="24sp" />
 
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="top|end"
-        android:textSize="24sp"
-        android:padding="10dp"
-        android:textColor="@color/textColor" />
+        <TextView
+            android:id="@+id/previous_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Previous state"
+            android:textColor="@android:color/black"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/current_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/state_unknown"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/status_unknown"
+            android:textColor="@color/textColor"
+            android:textSize="24sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/state_unknown"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <EditText
+                android:id="@+id/et_msg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="10dp"
+                android:layout_toLeftOf="@+id/btn_send"
+                android:hint="@string/hint_enterMessage"
+                android:textColor="@color/colorPrimary" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/state_unknown"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <EditText
+                    android:id="@+id/et_destAdsress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/btn_send"
+                    android:hint="@string/hint_enterDestination"
+                    android:textColor="@color/colorPrimary" />
+
+                <Button
+                    android:id="@+id/btn_send"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/btn_send"
+                    android:textColor="@color/colorPrimary" />
+            </RelativeLayout>
+
+        </LinearLayout>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/debug_log"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
+        android:layout_margin="10dp"
         android:gravity="bottom"
         android:maxLines="10"
         android:scrollbars="vertical"
-        android:textSize="20sp"
-        android:textColor="@color/textColor" />
-
-</FrameLayout>
+        android:textColor="@android:color/black"
+        android:textSize="20sp" />
+</RelativeLayout>

@@ -6,5 +6,13 @@
     <string name="toast_disconnected">Disconnected from %s</string>
 
     <string name="status_unknown">Please wait</string>
-    <string name="status_connected">Connected\nHold any of the volume keys to talk</string>
+    <string name="status_connected">Connected\n</string>
+    <string name="hint_enterNodeName">Enter node name</string>
+    <string name="hint_enterMessage">Enter message</string>
+    <string name="hint_enterDestination">Enter destination</string>
+    <string name="btn_continue">Continue</string>
+    <string name="err_invalidNodeName">Invalid node name</string>
+    <string name="err_invalidMsg">Invalid message</string>
+    <string name="err_invalidDestination">Invalid destination</string>
+    <string name="btn_send">Send</string>
 </resources>
