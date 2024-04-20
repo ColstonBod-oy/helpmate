@@ -7,7 +7,7 @@ android {
     compileSdk = 33
     
     defaultConfig {
-        minSdk = 16
+        minSdk = 19
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -42,5 +42,6 @@ dependencies {
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.multidex:multidex:2.0.1")
+    implementation("com.google.android.gms:play-services-location:21.2.0")
 }
 
