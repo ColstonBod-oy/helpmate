@@ -53,7 +53,7 @@ public class MainActivity extends ConnectionsActivity {
     /**
      * If true, debug logs are shown on the device.
      */
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
 
     /**
      * Permissions request code.
@@ -79,25 +79,6 @@ public class MainActivity extends ConnectionsActivity {
     private static final long ANIMATION_DURATION = 600;
 
     /**
-     * /**
-     * A set of background colors. We'll hash the authentication token we get from connecting to a
-     * device to pick a color randomly from this list. Devices with the same background color are
-     * talking to each other securely (with 1/COLORS.length chance of collision with another pair of
-     * devices).
-     */
-    @ColorInt
-    private static final int[] COLORS =
-            new int[]{
-                    0xFF4CAF50 /* red */,
-                    0xFF4CAF50 /* deep purple */,
-                    0xFF4CAF50 /* teal */,
-                    0xFF4CAF50 /* green */,
-                    0xFF4CAF50 /* amber */,
-                    0xFF4CAF50 /* orange */,
-                    0xFF4CAF50 /* brown */
-            };
-
-    /**
      * This service id lets us find other nearby devices that are interested in the same thing. Our
      * sample does exactly one thing, so we hardcode the ID.
      */
@@ -114,13 +95,6 @@ public class MainActivity extends ConnectionsActivity {
      * A random UID used as this device's endpoint name.
      */
     private String mName;
-
-    /**
-     * The background color of the 'CONNECTED' state. This is randomly chosen from the {@link #COLORS}
-     * list, based off the authentication token.
-     */
-    @ColorInt
-    private int mConnectedColor = COLORS[0];
 
     /**
      * Displays the previous state during animation transitions.
@@ -265,17 +239,21 @@ public class MainActivity extends ConnectionsActivity {
                     et_dest.setError(getString(R.string.err_invalidDestination));
                     return;
                 }
-                int destId = -1;
+                String destId = "";
                 try {
-                    destId = Integer.parseInt(destAddress);
+                    destId = destAddress;
                 } catch (Exception e) {
-                    destId = -1;
+                    destId = "";
                 }
+                String sourceId = PeerDetails.getInstance().getPeerAddress();
+
+                // Add destId and sourceId as metadata to the start of the message
+                msg = sourceId + ":" + destId + ":" + msg;
                 byte[] dataArray = msg.getBytes();
-                int sourceId = PeerDetails.getInstance().peerAddressToInt();
+
 
                 logV("Send Message to => " + destId + " : Message =>" + msg);
-                send(dataArray, destId, sourceId, 4);
+                send(dataArray, 4);
                 //  et_dest.setText("");
                 et_msg.setText("");
             }
@@ -288,7 +266,7 @@ public class MainActivity extends ConnectionsActivity {
 
         mName = generateRandomName();
 
-        ((TextView) findViewById(R.id.name)).setText("Peer Name : " + mName);
+        ((TextView) findViewById(R.id.name)).setText(mName);
     }
 
     @Override
@@ -322,13 +300,11 @@ public class MainActivity extends ConnectionsActivity {
         }
     }
 
-    private void send(byte[] dataArray, int destId, int sourceId, int hope) {
+    private void send(byte[] dataArray, int hope) {
 
-        byte[] data = new byte[dataArray.length + 3];
-        data[0] = (byte) sourceId;
-        data[1] = (byte) destId;
-        data[2] = (byte) hope;
-        System.arraycopy(dataArray, 0, data, 3, dataArray.length);
+        byte[] data = new byte[dataArray.length + 1];
+        data[0] = (byte) hope;
+        System.arraycopy(dataArray, 0, data, 1, dataArray.length);
         Payload payload = Payload.fromBytes(data);
         send(payload);
     }
@@ -419,11 +395,6 @@ public class MainActivity extends ConnectionsActivity {
 
     @Override
     protected void onConnectionInitiated(Endpoint endpoint, ConnectionInfo connectionInfo) {
-        // A connection to another device has been initiated! We'll use the auth token, which is the
-        // same on both devices, to pick a color to use when we're connected. This way, users can
-        // visually see which device they connected with.
-        mConnectedColor = COLORS[connectionInfo.getAuthenticationToken().hashCode() % COLORS.length];
-
         // We accept the connection immediately.
         acceptConnection(endpoint);
     }
@@ -691,12 +662,14 @@ public class MainActivity extends ConnectionsActivity {
 
                 String connectedNodes = getString(R.string.status_connected);
                 for (String node : connectedEndPoints) {
-                    connectedNodes = connectedNodes + " | " + mEstablishedConnections.get(node).getName();
+                    connectedNodes = connectedNodes + " | " + mEstablishedConnections.get(node).getName()
+                            + "\n\n Hold any of the volume keys to talk";
+                    textView.setBackgroundColor(0xFF4CAF50); /* green */
                 }
                 if (connectedEndPoints.size() <= 0) {
                     connectedNodes = "No nodes connected";
+                    textView.setBackgroundColor(0xFFF44336); /* red */
                 }
-                textView.setBackgroundColor(mConnectedColor);
                 textView.setText(connectedNodes);
                 break;
             default:
@@ -736,24 +709,27 @@ public class MainActivity extends ConnectionsActivity {
             player.start();
         } else if (payload.getType() == Payload.Type.BYTES) {
             byte[] data = payload.asBytes();
-            int mySourceId = PeerDetails.getInstance().peerAddressToInt();
-            int sourceId = data[0];
-            int destId = data[1];
-            int hope = data[2];
+            String mySourceId = PeerDetails.getInstance().getPeerAddress();
+            int hope = data[0];
 
-            byte[] dataArray = new byte[data.length - 3];
+            byte[] dataArray = new byte[data.length - 1];
+            System.arraycopy(data, 1, dataArray, 0, dataArray.length);
 
-            System.arraycopy(data, 3, dataArray, 0, dataArray.length);
-            if (destId == mySourceId) {
+            String[] message = new String(dataArray).split(":");
+            String sourceId = message[0];
+            String destId = message[1];
+            String msg = message[2];
+
+            if (destId.equals(mySourceId)) {
                 logD("Message received to the correct node with hope = " + hope);
-                logI("Message : " + new String(dataArray));
+                logI("Message from " + sourceId + ": " + msg);
             } else {
-                if (sourceId != mySourceId) {
+                if (!sourceId.equals(mySourceId)) {
                     logD("Hope received : " + hope);
                     hope--;
                     if (hope > 0) {
                         logD("Retransmitting data : From=> " + sourceId + " : To=>" + destId);
-                        send(dataArray, destId, sourceId, hope);
+                        send(dataArray, hope);
                     } else {
                         logE("Message Discarding since  hope ended : " + hope);
 

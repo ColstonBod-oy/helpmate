@@ -41,6 +41,7 @@
             android:textSize="24sp" />
 
         <LinearLayout
+            android:id="@+id/message_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/state_unknown"
@@ -83,20 +84,17 @@
                     android:text="@string/btn_send"
                     android:textColor="@color/colorPrimary" />
             </RelativeLayout>
-
         </LinearLayout>
-    </LinearLayout>
 
-    <TextView
-        android:id="@+id/debug_log"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom"
-        android:layout_margin="10dp"
-        android:gravity="bottom"
-        android:maxLines="10"
-        android:scrollbars="vertical"
-        android:textColor="@android:color/black"
-        android:textSize="20sp" />
+        <TextView
+            android:id="@+id/debug_log"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_below="@id/message_form"
+            android:maxLines="19"
+            android:scrollbars="vertical"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
+    </LinearLayout>
 </RelativeLayout>

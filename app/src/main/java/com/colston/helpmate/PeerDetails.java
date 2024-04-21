@@ -19,12 +19,4 @@ public class PeerDetails {
     public void setPeerAddress(String peerAddress) {
         this.peerAddress = peerAddress;
     }
-
-    public int peerAddressToInt() {
-        try {
-            return Integer.parseInt(getPeerAddress());
-        } catch (Exception e) {
-            return -1;
-        }
-    }
 }

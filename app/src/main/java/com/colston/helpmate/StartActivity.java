@@ -15,10 +15,11 @@ import com.google.android.gms.location.*;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 public class StartActivity extends AppCompatActivity {
     private static final int REQUEST_CHECK_SETTINGS = 0;
+    private static final String ALPHA_NUMERIC_STRING = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -26,9 +27,7 @@ public class StartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start);
         Button btn_continue = findViewById(R.id.btn_continue);
         final EditText et_nodeName = findViewById(R.id.editText);
-        Random random = new Random();
-        long node = random.nextInt(50) + 1;
-        et_nodeName.setText("" + node);
+        et_nodeName.setText(generateNodeName(10));
 
         // Set up a location request
         LocationRequest locationRequest = new LocationRequest.Builder(LocationRequest.PRIORITY_HIGH_ACCURACY, 10000).build();
@@ -73,5 +72,17 @@ public class StartActivity extends AppCompatActivity {
                 startActivity(new Intent(StartActivity.this, MainActivity.class));
             }
         });
+    }
+
+    public static String generateNodeName(int length) {
+        StringBuilder builder = new StringBuilder();
+        SecureRandom random = new SecureRandom();
+
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(ALPHA_NUMERIC_STRING.length());
+            builder.append(ALPHA_NUMERIC_STRING.charAt(index));
+        }
+
+        return builder.toString();
     }
 }
