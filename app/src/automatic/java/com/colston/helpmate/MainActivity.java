@@ -53,7 +53,7 @@ public class MainActivity extends ConnectionsActivity {
     /**
      * If true, debug logs are shown on the device.
      */
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     /**
      * Permissions request code.
@@ -117,6 +117,7 @@ public class MainActivity extends ConnectionsActivity {
      */
     private TextView mDebugLogView;
 
+    private SimpleDateFormat sdf;
     EditText et_msg, et_dest;
     Button btn_send;
 
@@ -164,6 +165,8 @@ public class MainActivity extends ConnectionsActivity {
 
         mPreviousStateView = (TextView) findViewById(R.id.previous_state);
         mCurrentStateView = (TextView) findViewById(R.id.current_state);
+        mCurrentStateView.setMovementMethod(new ScrollingMovementMethod());
+
         btn_send = findViewById(R.id.btn_send);
         et_msg = findViewById(R.id.et_msg);
         et_dest = findViewById(R.id.et_destAdsress);
@@ -662,8 +665,7 @@ public class MainActivity extends ConnectionsActivity {
 
                 String connectedNodes = getString(R.string.status_connected);
                 for (String node : connectedEndPoints) {
-                    connectedNodes = connectedNodes + " | " + mEstablishedConnections.get(node).getName()
-                            + "\n\n Hold any of the volume keys to talk";
+                    connectedNodes = "Hold any of the volume keys to talk\n\n" + connectedNodes + " | " + mEstablishedConnections.get(node).getName();
                     textView.setBackgroundColor(0xFF4CAF50); /* green */
                 }
                 if (connectedEndPoints.size() <= 0) {
@@ -722,7 +724,7 @@ public class MainActivity extends ConnectionsActivity {
 
             if (destId.equals(mySourceId)) {
                 logD("Message received to the correct node with hope = " + hope);
-                logI("Message from " + sourceId + ": " + msg);
+                logI(sourceId + ": " + msg);
             } else {
                 if (!sourceId.equals(mySourceId)) {
                     logD("Hope received : " + hope);
@@ -902,7 +904,11 @@ public class MainActivity extends ConnectionsActivity {
             @Override
             public void run() {
                 mDebugLogView.append("\n");
-                SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss.SSS");
+                if (DEBUG) {
+                    sdf = new SimpleDateFormat("hh:mm:ss.SSS");
+                } else {
+                    sdf = new SimpleDateFormat("hh:mm");
+                }
                 String formattedTime = sdf.format(new Date(System.currentTimeMillis()));
 
                 mDebugLogView.append(formattedTime + ": ");
