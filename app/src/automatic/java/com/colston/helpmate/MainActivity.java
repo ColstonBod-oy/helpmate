@@ -5,7 +5,6 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.IntentSender;
-import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,8 +20,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.annotation.*;
-import androidx.core.app.ActivityCompat;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.UiThread;
+import androidx.annotation.WorkerThread;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -53,19 +54,12 @@ public class MainActivity extends ConnectionsActivity {
     /**
      * If true, debug logs are shown on the device.
      */
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
 
     /**
-     * Permissions request code.
+     * Location system settings permission request code.
      */
-    private static final int LOCATION_PERMISSIONS_REQUEST_CODE = 0;
-    private static final int BLUETOOTH_PERMISSIONS_REQUEST_CODE = 1;
-    private static final int RECORD_AUDIO_PERMISSION_REQUEST_CODE = 2;
     private static final int REQUEST_CHECK_SETTINGS = 3;
-    @RequiresApi(api = Build.VERSION_CODES.S)
-    private static final String[] ANDROID_12_BLE_PERMISSIONS = new String[]{Manifest.permission.BLUETOOTH_ADVERTISE,
-            Manifest.permission.BLUETOOTH_CONNECT,
-            Manifest.permission.BLUETOOTH_SCAN};
 
     /**
      * The connection strategy we'll use for Nearby Connections. In this case, we've decided on
@@ -171,34 +165,6 @@ public class MainActivity extends ConnectionsActivity {
         et_msg = findViewById(R.id.et_msg);
         et_dest = findViewById(R.id.et_destAdsress);
 
-        // Prompt the user to grant permissions
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                            Manifest.permission.ACCESS_COARSE_LOCATION},
-                    LOCATION_PERMISSIONS_REQUEST_CODE);
-        } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_ADVERTISE)
-                != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT)
-                        != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN)
-                        != PackageManager.PERMISSION_GRANTED
-        ) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                ActivityCompat.requestPermissions(this,
-                        ANDROID_12_BLE_PERMISSIONS,
-                        BLUETOOTH_PERMISSIONS_REQUEST_CODE);
-            }
-        } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.RECORD_AUDIO},
-                    RECORD_AUDIO_PERMISSION_REQUEST_CODE);
-        }
-
         // Set up a location request
         LocationRequest locationRequest = new LocationRequest.Builder(LocationRequest.PRIORITY_HIGH_ACCURACY, 10000).build();
 
@@ -270,37 +236,6 @@ public class MainActivity extends ConnectionsActivity {
         mName = generateRandomName();
 
         ((TextView) findViewById(R.id.name)).setText(mName);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == LOCATION_PERMISSIONS_REQUEST_CODE) {
-
-            // Checking whether user granted the permissions or not.
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                // Showing the toast message
-                Toast.makeText(MainActivity.this, "Location Permissions Granted", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(MainActivity.this, "Location Permissions Denied", Toast.LENGTH_SHORT).show();
-            }
-        } else if (requestCode == BLUETOOTH_PERMISSIONS_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(MainActivity.this, "Bluetooth Permissions Granted", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(MainActivity.this, "Bluetooth Permissions Denied", Toast.LENGTH_SHORT).show();
-            }
-        } else if (requestCode == RECORD_AUDIO_PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(MainActivity.this, "Record Audio Permission Granted", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(MainActivity.this, "Record Audio Permission Denied", Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 
     private void send(byte[] dataArray, int hope) {
