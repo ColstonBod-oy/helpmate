@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:keepScreenOn="true"
@@ -35,11 +36,11 @@
             android:layout_height="wrap_content"
             android:background="@color/state_unknown"
             android:gravity="center"
+            android:maxLines="5"
             android:padding="10dp"
+            android:scrollbars="vertical"
             android:text="@string/status_unknown"
             android:textColor="@color/textColor"
-            android:maxLines="5"
-            android:scrollbars="vertical"
             android:textSize="24sp" />
 
         <LinearLayout
@@ -50,15 +51,30 @@
             android:orientation="vertical"
             android:padding="10dp">
 
-            <EditText
-                android:id="@+id/et_msg"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/filledTextField"
+                style="@style/AuthInputLayoutStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_margin="10dp"
-                android:layout_toLeftOf="@+id/btn_send"
+                android:layout_marginStart="@dimen/start_end_margin"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="@dimen/start_end_margin"
                 android:hint="@string/hint_enterMessage"
-                android:textColor="@color/colorPrimary" />
+                android:theme="@style/AuthInputLayoutStyle"
+                app:boxCornerRadiusBottomEnd="@dimen/til_radius"
+                app:boxCornerRadiusBottomStart="@dimen/til_radius"
+                app:boxCornerRadiusTopEnd="@dimen/til_radius"
+                app:boxCornerRadiusTopStart="@dimen/til_radius"
+                app:boxStrokeWidth="2dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_msg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/btn_send"
+                    android:textColor="@color/colorPrimary" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -92,8 +108,8 @@
             android:id="@+id/debug_log"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:layout_below="@id/message_form"
+            android:layout_margin="10dp"
             android:maxLines="19"
             android:scrollbars="vertical"
             android:textColor="@android:color/black"
