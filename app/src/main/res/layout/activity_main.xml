@@ -66,8 +66,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_enterDestination"
-                android:paddingHorizontal="20dp"
-                android:paddingVertical="10dp"
+                android:paddingTop="10dp"
                 android:theme="@style/TextInputLayoutStyle"
                 app:boxCornerRadiusBottomEnd="10dp"
                 app:boxCornerRadiusBottomStart="10dp"
@@ -79,7 +78,9 @@
                     android:id="@+id/et_destAdsress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="60dp"
+                    android:layout_marginEnd="190dp"
+                    android:maxLength="15"
+                    android:maxLines="1"
                     android:textColor="@color/colorPrimary" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -87,7 +88,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingHorizontal="20dp"
                 android:paddingVertical="10dp">
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -107,8 +107,9 @@
                         android:id="@+id/et_msg"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="60dp"
+                        android:layout_marginEnd="58dp"
                         android:layout_toStartOf="@+id/btn_send"
+                        android:maxLines="5"
                         android:textColor="@color/colorPrimary" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -118,6 +119,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
+                    android:layout_marginEnd="8dp"
                     android:background="?attr/selectableItemBackground"
                     android:paddingTop="5dp"
                     android:scaleType="centerInside"
