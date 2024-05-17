@@ -16,18 +16,24 @@ import android.text.style.ForegroundColorSpan;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewAnimationUtils;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
 import androidx.annotation.WorkerThread;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
+
 import com.google.android.gms.common.api.ResolvableApiException;
-import com.google.android.gms.location.*;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.nearby.connection.ConnectionInfo;
 import com.google.android.gms.nearby.connection.Payload;
 import com.google.android.gms.nearby.connection.Strategy;
@@ -36,7 +42,11 @@ import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.Random;
+import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Our WalkieTalkie Activity. This Activity has 3 {@link State}s.
@@ -113,7 +123,7 @@ public class MainActivity extends ConnectionsActivity {
 
     private SimpleDateFormat sdf;
     EditText et_msg, et_dest;
-    Button btn_send;
+    ImageButton btn_send;
 
     /**
      * Listens to holding/releasing the volume rocker.

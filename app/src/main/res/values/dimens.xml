@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="til_radius">10dp</dimen>
-    <dimen name="start_end_margin">20dp</dimen>
-</resources>

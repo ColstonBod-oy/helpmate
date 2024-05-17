@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="AuthInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="colorPrimary">@color/blue_5</item>
     </style>
 
