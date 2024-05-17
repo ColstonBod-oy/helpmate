@@ -7,7 +7,7 @@
 
     <string name="status_unknown">Please wait</string>
     <string name="status_connected">Connected\n</string>
-    <string name="hint_enterNodeName">Enter node name</string>
+    <string name="hint_enterUsername">Enter username</string>
     <string name="hint_enterMessage">Enter message</string>
     <string name="hint_enterDestination">Enter destination</string>
     <string name="btn_continue">Continue</string>

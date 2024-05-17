@@ -1,7 +1,7 @@
 <resources>
 
     <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="colorPrimary">@color/blue_5</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
     </style>
 
     <!-- Base application theme. -->
@@ -13,6 +13,18 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionBarOverlay">true</item>
         <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:actionBarStyle">@style/CustomActionBar</item>
+
+        <!-- Support library compatibility -->
+        <item name="actionBarStyle">@style/CustomActionBar</item>
+    </style>
+
+    <!-- ActionBar styles -->
+    <style name="CustomActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@drawable/actionBar</item>
+
+        <!-- Support library compatibility -->
+        <item name="background">@drawable/actionBar</item>
     </style>
 
 </resources>

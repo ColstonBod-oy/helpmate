@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <drawable name="actionBar">#44000000</drawable>
+    <drawable name="actionBar">#EFEFF0</drawable>
 </resources>

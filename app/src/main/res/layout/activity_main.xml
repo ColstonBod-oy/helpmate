@@ -11,37 +11,35 @@
         android:keepScreenOn="true"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/name"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="top|end"
-            android:padding="10dp"
-            android:textColor="@android:color/black"
-            android:textSize="24sp" />
+            android:layout_marginTop="?android:attr/actionBarSize"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/previous_state"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="Previous state"
-            android:textColor="@android:color/black"
-            android:textSize="24sp" />
+            <TextView
+                android:id="@+id/previous_state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Previous state"
+                android:textColor="@color/textColor"
+                android:textSize="24sp" />
 
-        <TextView
-            android:id="@+id/current_state"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/state_unknown"
-            android:gravity="center"
-            android:maxLines="5"
-            android:padding="10dp"
-            android:scrollbars="vertical"
-            android:text="@string/status_unknown"
-            android:textColor="@color/textColor"
-            android:textSize="24sp" />
+            <TextView
+                android:id="@+id/current_state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/state_unknown"
+                android:gravity="center"
+                android:maxLines="5"
+                android:padding="10dp"
+                android:scrollbars="vertical"
+                android:text="@string/status_unknown"
+                android:textColor="@color/textColor"
+                android:textSize="24sp" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/debug_log"

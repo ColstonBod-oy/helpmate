@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#000000</color>
+    <color name="colorPrimary">#EC4B33</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#66BB6A</color>
+    <color name="gray">#EFEFF0</color>
 
     <color name="textColor">#FFFFFF</color>
+    <color name="logoColor">#EC4B33</color>
 
     <color name="state_unknown">#78909C</color>
     <color name="state_connected">#0097A7</color>
@@ -14,6 +16,4 @@
     <color name="log_warning">#E57373</color>
     <color name="log_error">#F44336</color>
     <color name="log_info">#66BB6A</color>
-
-    <color name="blue_5">#3B7DD8</color>
 </resources>

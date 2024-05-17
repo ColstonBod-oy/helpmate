@@ -25,7 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
 import androidx.annotation.WorkerThread;
-import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.ActionBar;
 import androidx.core.view.ViewCompat;
 
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -164,10 +164,19 @@ public class MainActivity extends ConnectionsActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportActionBar()
-                .setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.actionBar));
+
+        // Inflate custom action bar layout
+        View customActionBar = getLayoutInflater().inflate(R.layout.main_actionbar, null);
+
+        // Set custom view for ActionBar
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(customActionBar);
+
+        // Get reference to the name text view within custom ActionBar
+        TextView nameTextView = customActionBar.findViewById(R.id.name);
 
         mPreviousStateView = (TextView) findViewById(R.id.previous_state);
+        mPreviousStateView.setVisibility(View.GONE);
         mCurrentStateView = (TextView) findViewById(R.id.current_state);
         mCurrentStateView.setMovementMethod(new ScrollingMovementMethod());
 
@@ -245,7 +254,7 @@ public class MainActivity extends ConnectionsActivity {
 
         mName = generateRandomName();
 
-        ((TextView) findViewById(R.id.name)).setText(mName);
+        nameTextView.setText(mName);
     }
 
     private void send(byte[] dataArray, int hope) {
@@ -505,7 +514,10 @@ public class MainActivity extends ConnectionsActivity {
      */
     @UiThread
     private void transitionForward(State oldState, final State newState) {
-        mPreviousStateView.setVisibility(View.VISIBLE);
+        if (oldState != State.UNKNOWN) {
+            mPreviousStateView.setVisibility(View.VISIBLE);
+        }
+
         mCurrentStateView.setVisibility(View.VISIBLE);
 
         updateTextView(mPreviousStateView, oldState);
