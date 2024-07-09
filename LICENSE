@@ -199,3 +199,13 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
+   HELPMATE SUBCOMPONENTS:
+
+   Helpmate includes sample code from NearbyConnectionsWalkieTalkie,
+   copyright Jeremy Walker and the NearbyConnectionsWalkieTalkie contributors,
+   which is available under the Apache License, Version 2.0. 
+   For details, see app/src/.
+
+   You may obtain a copy of the sample code at:
+   https://github.com/android/connectivity-samples/tree/main/NearbyConnectionsWalkieTalkie
