@@ -1,9 +1,25 @@
+/*
+ * Copyright 2023 Colston Bod-oy
+ *
+ * Copyright 2019 Jeremy Walker and contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.colston.helpmate;
 
 import android.Manifest;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
-import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -15,12 +31,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.ParcelFileDescriptor;
 import android.os.Vibrator;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.UiThread;
-import androidx.annotation.WorkerThread;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
 import android.text.SpannableString;
 import android.text.format.DateFormat;
 import android.text.method.ScrollingMovementMethod;
@@ -30,6 +40,12 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.UiThread;
+import androidx.annotation.WorkerThread;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import com.google.android.gms.nearby.connection.ConnectionInfo;
 import com.google.android.gms.nearby.connection.Payload;
 import com.google.android.gms.nearby.connection.Strategy;
@@ -84,8 +100,7 @@ public class MainActivity extends ConnectionsActivity implements SensorEventList
    * This service id lets us find other nearby devices that are interested in the same thing. Our
    * sample does exactly one thing, so we hardcode the ID.
    */
-  private static final String SERVICE_ID =
-      "com.colston.helpmate.manual.SERVICE_ID";
+  private static final String SERVICE_ID = "com.colston.helpmate.manual.SERVICE_ID";
 
   /**
    * The state of the app. As the app changes states, the UI will update and advertising/discovery
@@ -295,7 +310,9 @@ public class MainActivity extends ConnectionsActivity implements SensorEventList
     onStateChanged(oldState, state);
   }
 
-  /** @return The current state. */
+  /**
+   * @return The current state.
+   */
   private State getState() {
     return mState;
   }
@@ -434,8 +451,7 @@ public class MainActivity extends ConnectionsActivity implements SensorEventList
     }
   }
 
-  @NonNull
-  private Animator createAnimator(boolean reverse) {
+  @NonNull private Animator createAnimator(boolean reverse) {
     Animator animator;
     if (Build.VERSION.SDK_INT >= 21) {
       int cx = mCurrentStateView.getMeasuredWidth() / 2;
@@ -568,7 +584,9 @@ public class MainActivity extends ConnectionsActivity implements SensorEventList
     mAudioPlayers.clear();
   }
 
-  /** @return True if currently playing. */
+  /**
+   * @return True if currently playing.
+   */
   private boolean isPlaying() {
     return !mAudioPlayers.isEmpty();
   }
@@ -599,7 +617,9 @@ public class MainActivity extends ConnectionsActivity implements SensorEventList
     }
   }
 
-  /** @return True if currently streaming from the microphone. */
+  /**
+   * @return True if currently streaming from the microphone.
+   */
   private boolean isRecording() {
     return mRecorder != null && mRecorder.isRecording();
   }
@@ -607,9 +627,7 @@ public class MainActivity extends ConnectionsActivity implements SensorEventList
   /** {@see ConnectionsActivity#getRequiredPermissions()} */
   @Override
   protected String[] getRequiredPermissions() {
-    return join(
-        super.getRequiredPermissions(),
-        Manifest.permission.RECORD_AUDIO);
+    return join(super.getRequiredPermissions(), Manifest.permission.RECORD_AUDIO);
   }
 
   /** Joins 2 arrays together. */
