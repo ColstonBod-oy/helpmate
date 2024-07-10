@@ -19,11 +19,9 @@ rootProject {
             kotlin {
                 target("**/*.kt")
                 targetExclude("**/build/**/*.kt")
-                // FIXME: This no longer working after spotless updata
-                // ktlint(ktlintVersion).userData(mapOf("android" to "true"))
-                // Temp Fix
-                ktlint(ktlintVersion)
-                licenseHeaderFile(rootProject.file("spotless/copyright.kt"))
+                ktlint().userData(mapOf("android" to "true"))
+                // Look for the first line that doesn't have a block comment (assumed to be the license)
+                licenseHeaderFile(rootProject.file("spotless/copyright.kt"), "(^(?![\\/ ]\\*).*$)")
             }
             groovy {
                 target("**/*.gradle")
