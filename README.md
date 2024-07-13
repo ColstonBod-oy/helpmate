@@ -6,5 +6,5 @@ During a disaster or situations that cause people to have no adequate access to 
 This is why the main focus of our research is to integrate the Google Nearby Connections API, which allows offline multi-peer communications, into a mobile app to provide an alternative way of communication during disasters.
 
 DEMO:
-<video src='https://github.com/user-attachments/assets/08283333-cda4-4686-82fe-9505067d78f9' width=180/>
+<video src='https://github.com/user-attachments/assets/08283333-cda4-4686-82fe-9505067d78f9'/>
 
