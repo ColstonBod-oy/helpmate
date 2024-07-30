@@ -44,11 +44,7 @@ import androidx.annotation.WorkerThread;
 import androidx.appcompat.app.ActionBar;
 import androidx.core.view.ViewCompat;
 import com.google.android.gms.common.api.ResolvableApiException;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResponse;
-import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.location.*;
 import com.google.android.gms.nearby.connection.ConnectionInfo;
 import com.google.android.gms.nearby.connection.Payload;
 import com.google.android.gms.nearby.connection.Strategy;
@@ -56,11 +52,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Random;
-import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 /**
  * Our WalkieTalkie Activity. This Activity has 3 {@link State}s.
@@ -146,6 +138,9 @@ public class MainActivity extends ConnectionsActivity {
   /** The phone's original media volume. */
   private int mOriginalVolume;
 
+  /** Keeps track of the previous message to prevent message loops. */
+  private String prevMessage;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -169,6 +164,14 @@ public class MainActivity extends ConnectionsActivity {
     btn_send = findViewById(R.id.btn_send);
     et_msg = findViewById(R.id.et_msg);
     et_dest = findViewById(R.id.et_destAdsress);
+
+    // Set et_dest to "All" by default
+    et_dest.setText("All");
+
+    // Hide et_dest if DEBUG is false
+    if (!DEBUG) {
+      et_dest.setVisibility(View.GONE);
+    }
 
     // Set up a location request
     LocationRequest locationRequest =
@@ -223,6 +226,9 @@ public class MainActivity extends ConnectionsActivity {
               destId = "";
             }
             String sourceId = PeerDetails.getInstance().getPeerAddress();
+
+            // Set previous message to the current message
+            prevMessage = msg;
 
             // Add destId and sourceId as metadata to the start of the message
             msg = sourceId + ":" + destId + ":" + msg;
@@ -659,7 +665,19 @@ public class MainActivity extends ConnectionsActivity {
       String destId = message[1];
       String msg = message[2];
 
-      if (destId.equals(mySourceId)) {
+      if (destId.equals("All")) {
+        logD("Hope received : " + hope);
+        hope--;
+        if (prevMessage.equals(msg)) {
+          logE("Message Discarding since previous message received : " + msg);
+        } else if (hope > 0) {
+          logI(sourceId + ": " + msg);
+          logD("Retransmitting data : From=> " + sourceId + " : To=>" + destId);
+          send(dataArray, hope);
+        } else {
+          logE("Message Discarding since hope ended : " + hope);
+        }
+      } else if (destId.equals(mySourceId)) {
         logD("Message received to the correct node with hope = " + hope);
         logI(sourceId + ": " + msg);
       } else {
@@ -670,7 +688,7 @@ public class MainActivity extends ConnectionsActivity {
             logD("Retransmitting data : From=> " + sourceId + " : To=>" + destId);
             send(dataArray, hope);
           } else {
-            logE("Message Discarding since  hope ended : " + hope);
+            logE("Message Discarding since hope ended : " + hope);
           }
         } else {
           logW("My message received by retransmission....");
@@ -766,10 +784,7 @@ public class MainActivity extends ConnectionsActivity {
   @Override
   protected void logV(String msg) {
     super.logV(msg);
-
-    if (DEBUG) {
-      appendToLogs(toColor(msg, getResources().getColor(R.color.log_verbose)));
-    }
+    appendToLogs(toColor(msg, getResources().getColor(R.color.log_verbose)));
   }
 
   @Override
