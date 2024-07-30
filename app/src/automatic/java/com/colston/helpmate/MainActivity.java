@@ -68,7 +68,7 @@ import java.util.*;
  */
 public class MainActivity extends ConnectionsActivity {
   /** If true, debug logs are shown on the device. */
-  private static final boolean DEBUG = false;
+  private static boolean isOnDebugMode;
 
   /** Location system settings permission request code. */
   private static final int REQUEST_CHECK_SETTINGS = 3;
@@ -106,7 +106,7 @@ public class MainActivity extends ConnectionsActivity {
   /** An animator that controls the animation from previous state to current state. */
   @Nullable private Animator mCurrentAnimator;
 
-  /** A running log of debug messages. Only visible when DEBUG=true. */
+  /** A running log of debug messages. Only visible when isOnDebugMode=true. */
   private TextView mDebugLogView;
 
   private SimpleDateFormat sdf;
@@ -145,6 +145,7 @@ public class MainActivity extends ConnectionsActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+    isOnDebugMode = PeerDetails.getInstance().getPeerDebugMode();
 
     // Inflate custom action bar layout
     View customActionBar = getLayoutInflater().inflate(R.layout.main_actionbar, null);
@@ -168,8 +169,10 @@ public class MainActivity extends ConnectionsActivity {
     // Set et_dest to "All" by default
     et_dest.setText("All");
 
-    // Hide et_dest if DEBUG is false
-    if (!DEBUG) {
+    // Hide et_dest if isOnDebugMode is false
+    if (isOnDebugMode) {
+      et_dest.setVisibility(View.VISIBLE);
+    } else {
       et_dest.setVisibility(View.GONE);
     }
 
@@ -227,7 +230,7 @@ public class MainActivity extends ConnectionsActivity {
             }
             String sourceId = PeerDetails.getInstance().getPeerAddress();
 
-            if (!DEBUG) {
+            if (!isOnDebugMode) {
               appendToLogs(toColor("You: " + msg, getResources().getColor(R.color.log_debug)));
             }
 
@@ -247,7 +250,7 @@ public class MainActivity extends ConnectionsActivity {
 
     mDebugLogView = (TextView) findViewById(R.id.debug_log);
     // Commented this out because received messages are viewed on the log view as well
-    // mDebugLogView.setVisibility(DEBUG ? View.VISIBLE : View.GONE);
+    // mDebugLogView.setVisibility(isOnDebugMode ? View.VISIBLE : View.GONE);
     mDebugLogView.setMovementMethod(new ScrollingMovementMethod());
 
     mName = generateRandomName();
@@ -695,7 +698,7 @@ public class MainActivity extends ConnectionsActivity {
             logE("Message Discarding since hope ended : " + hope);
           }
         } else {
-          if (DEBUG) {
+          if (isOnDebugMode) {
             logW("My message received by retransmission....");
           }
         }
@@ -791,7 +794,7 @@ public class MainActivity extends ConnectionsActivity {
   protected void logV(String msg) {
     super.logV(msg);
 
-    if (DEBUG) {
+    if (isOnDebugMode) {
       appendToLogs(toColor(msg, getResources().getColor(R.color.log_verbose)));
     }
   }
@@ -800,7 +803,7 @@ public class MainActivity extends ConnectionsActivity {
   protected void logD(String msg) {
     super.logD(msg);
 
-    if (DEBUG) {
+    if (isOnDebugMode) {
       appendToLogs(toColor(msg, getResources().getColor(R.color.log_debug)));
     }
   }
@@ -850,7 +853,7 @@ public class MainActivity extends ConnectionsActivity {
           @Override
           public void run() {
             mDebugLogView.append("\n");
-            if (DEBUG) {
+            if (isOnDebugMode) {
               sdf = new SimpleDateFormat("hh:mm:ss.SSS");
             } else {
               sdf = new SimpleDateFormat("hh:mm");

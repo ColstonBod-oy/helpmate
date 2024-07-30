@@ -39,11 +39,17 @@
     </style>
 
     <!-- ActionBar styles -->
-    <style name="CustomActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+    <style name="CustomActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
         <item name="android:background">@drawable/actionBar</item>
 
         <!-- Support library compatibility -->
         <item name="background">@drawable/actionBar</item>
+    </style>
+
+    <!-- MaterialSwitch styles -->
+    <style name="CustomMaterialSwitch" parent="Widget.MaterialComponents.CompoundButton.Switch">
+        <item name="thumbTint">@color/custom_thumb_selector</item>
+        <item name="trackTint">@color/custom_track_selector</item>
     </style>
 
 </resources>

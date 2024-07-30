@@ -32,4 +32,15 @@
         android:textColor="@color/logoColor"
         android:textSize="24sp" />
 
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/toggle_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:text="Debug Mode "
+        android:textStyle="bold"
+        android:textSize="15dp"
+        style="@style/CustomMaterialSwitch"/>
+
 </RelativeLayout>

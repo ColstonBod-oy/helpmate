@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -39,6 +40,7 @@ import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.*;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import java.security.SecureRandom;
 
 public class StartActivity extends AppCompatActivity {
@@ -68,6 +70,9 @@ public class StartActivity extends AppCompatActivity {
     // Set custom view for ActionBar
     getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
     getSupportActionBar().setCustomView(customActionBar);
+
+    // Initialize the toggle switch
+    SwitchMaterial toggleSwitch = customActionBar.findViewById(R.id.toggle_switch);
 
     Button btn_continue = findViewById(R.id.btn_continue);
     final EditText et_nodeName = findViewById(R.id.et_username);
@@ -131,6 +136,14 @@ public class StartActivity extends AppCompatActivity {
                 // Ignore the error.
               }
             }
+          }
+        });
+
+    toggleSwitch.setOnCheckedChangeListener(
+        new CompoundButton.OnCheckedChangeListener() {
+          @Override
+          public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            PeerDetails.getInstance().setPeerDebugMode(isChecked);
           }
         });
 

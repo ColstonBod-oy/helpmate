@@ -20,6 +20,7 @@ package com.colston.helpmate;
 public class PeerDetails {
   static PeerDetails peerDetails;
   String peerAddress;
+  boolean peerDebugMode;
 
   public static PeerDetails getInstance() {
     if (peerDetails == null) {
@@ -32,7 +33,15 @@ public class PeerDetails {
     return peerAddress;
   }
 
+  public boolean getPeerDebugMode() {
+    return peerDebugMode;
+  }
+
   public void setPeerAddress(String peerAddress) {
     this.peerAddress = peerAddress;
+  }
+
+  public void setPeerDebugMode(boolean peerDebugMode) {
+    this.peerDebugMode = peerDebugMode;
   }
 }
