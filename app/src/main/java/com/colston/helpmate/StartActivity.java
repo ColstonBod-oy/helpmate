@@ -36,11 +36,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import com.google.android.gms.common.api.ResolvableApiException;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResponse;
-import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.location.*;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import java.security.SecureRandom;
@@ -143,7 +139,9 @@ public class StartActivity extends AppCompatActivity {
           @Override
           public void onClick(View v) {
             String nodName = et_nodeName.getText().toString();
-            if (TextUtils.isEmpty(nodName) || TextUtils.isEmpty(nodName.trim())) {
+            if (TextUtils.isEmpty(nodName)
+                || TextUtils.isEmpty(nodName.trim())
+                || nodName.equals("All")) {
               et_nodeName.setError(getString(R.string.err_invalidNodeName));
               return;
             }

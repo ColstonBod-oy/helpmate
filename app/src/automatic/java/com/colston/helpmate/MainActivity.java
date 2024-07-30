@@ -68,7 +68,7 @@ import java.util.*;
  */
 public class MainActivity extends ConnectionsActivity {
   /** If true, debug logs are shown on the device. */
-  private static final boolean DEBUG = true;
+  private static final boolean DEBUG = false;
 
   /** Location system settings permission request code. */
   private static final int REQUEST_CHECK_SETTINGS = 3;
@@ -139,7 +139,7 @@ public class MainActivity extends ConnectionsActivity {
   private int mOriginalVolume;
 
   /** Keeps track of the previous message to prevent message loops. */
-  private String prevMessage;
+  private String prevMessage = "";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -226,6 +226,10 @@ public class MainActivity extends ConnectionsActivity {
               destId = "";
             }
             String sourceId = PeerDetails.getInstance().getPeerAddress();
+
+            if (!DEBUG) {
+              appendToLogs(toColor("You: " + msg, getResources().getColor(R.color.log_debug)));
+            }
 
             // Set previous message to the current message
             prevMessage = msg;
@@ -665,13 +669,13 @@ public class MainActivity extends ConnectionsActivity {
       String destId = message[1];
       String msg = message[2];
 
-      if (destId.equals("All")) {
+      if (destId.equals("All") && !prevMessage.equals(msg)) {
+        logI(sourceId + ": " + msg);
+        prevMessage = msg;
+
         logD("Hope received : " + hope);
         hope--;
-        if (prevMessage.equals(msg)) {
-          logE("Message Discarding since previous message received : " + msg);
-        } else if (hope > 0) {
-          logI(sourceId + ": " + msg);
+        if (hope > 0) {
           logD("Retransmitting data : From=> " + sourceId + " : To=>" + destId);
           send(dataArray, hope);
         } else {
@@ -691,7 +695,9 @@ public class MainActivity extends ConnectionsActivity {
             logE("Message Discarding since hope ended : " + hope);
           }
         } else {
-          logW("My message received by retransmission....");
+          if (DEBUG) {
+            logW("My message received by retransmission....");
+          }
         }
       }
     }
@@ -784,7 +790,10 @@ public class MainActivity extends ConnectionsActivity {
   @Override
   protected void logV(String msg) {
     super.logV(msg);
-    appendToLogs(toColor(msg, getResources().getColor(R.color.log_verbose)));
+
+    if (DEBUG) {
+      appendToLogs(toColor(msg, getResources().getColor(R.color.log_verbose)));
+    }
   }
 
   @Override
