@@ -33,10 +33,7 @@ import android.text.style.ForegroundColorSpan;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewAnimationUtils;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
@@ -108,6 +105,9 @@ public class MainActivity extends ConnectionsActivity {
 
   /** A running log of debug messages. Only visible when isOnDebugMode=true. */
   private TextView mDebugLogView;
+
+  /** Wraps the debug log view to enable auto-scrolling when a new message is received. */
+  private ScrollView mDebugScrollView;
 
   private SimpleDateFormat sdf;
   EditText et_msg, et_dest;
@@ -251,10 +251,10 @@ public class MainActivity extends ConnectionsActivity {
     mDebugLogView = (TextView) findViewById(R.id.debug_log);
     // Commented this out because received messages are viewed on the log view as well
     // mDebugLogView.setVisibility(isOnDebugMode ? View.VISIBLE : View.GONE);
-    mDebugLogView.setMovementMethod(new ScrollingMovementMethod());
+
+    mDebugScrollView = (ScrollView) findViewById(R.id.debug_scroll_view);
 
     mName = generateRandomName();
-
     nameTextView.setText(mName);
   }
 
@@ -862,6 +862,12 @@ public class MainActivity extends ConnectionsActivity {
 
             mDebugLogView.append(formattedTime + ": ");
             mDebugLogView.append(msg);
+
+            // Automatically scroll to the bottom of the debug log.
+            mDebugScrollView.post(
+                () -> {
+                  mDebugScrollView.smoothScrollTo(0, mDebugLogView.getBottom());
+                });
           }
         });
   }
