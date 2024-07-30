@@ -52,4 +52,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:text="@string/btn_continue" />
+
+    <ImageView
+        android:id="@+id/image_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.40"
+        android:layout_marginTop="2dp"
+        android:src="@drawable/notice"
+        android:scaleType="fitCenter" />
 </LinearLayout>
