@@ -52,7 +52,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * Our WalkieTalkie Activity. This Activity has 3 {@link State}s.
+ * Our Main Activity. This Activity has 3 {@link State}s.
  *
  * <p>{@link State#UNKNOWN}: We cannot do anything while we're in this state. The app is likely in
  * the background.
