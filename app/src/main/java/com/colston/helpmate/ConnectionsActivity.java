@@ -230,15 +230,19 @@ public abstract class ConnectionsActivity extends AppCompatActivity {
   public void onRequestPermissionsResult(
       int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
     if (requestCode == REQUEST_CODE_REQUIRED_PERMISSIONS) {
+      int i = 0;
       for (int grantResult : grantResults) {
         if (grantResult == PackageManager.PERMISSION_DENIED) {
+          logW("Failed to request the permission " + permissions[i]);
           Toast.makeText(this, R.string.error_missing_permissions, Toast.LENGTH_LONG).show();
           finish();
           return;
         }
+        i++;
       }
       recreate();
     }
+
     super.onRequestPermissionsResult(requestCode, permissions, grantResults);
   }
 

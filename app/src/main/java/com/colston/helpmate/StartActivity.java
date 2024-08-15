@@ -18,19 +18,28 @@
 package com.colston.helpmate;
 
 import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.*;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import java.security.SecureRandom;
 
 public class StartActivity extends AppCompatActivity {
+  /** Location system settings permission request code. */
+  private static final int REQUEST_CHECK_SETTINGS = 3;
+
   private static final String ALPHA_NUMERIC_STRING =
       "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
@@ -52,6 +61,38 @@ public class StartActivity extends AppCompatActivity {
     Button btn_continue = findViewById(R.id.btn_continue);
     final EditText et_nodeName = findViewById(R.id.et_username);
     et_nodeName.setText(generateNodeName(10));
+
+    // Set up a location request
+    LocationRequest locationRequest =
+        new LocationRequest.Builder(LocationRequest.PRIORITY_HIGH_ACCURACY, 10000).build();
+
+    // Get current location settings
+    LocationSettingsRequest.Builder builder =
+        new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
+    SettingsClient client = LocationServices.getSettingsClient(this);
+    Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
+
+    // Prompt the user to change the location settings
+    // and enable GPS system settings to allow device discovery
+    task.addOnFailureListener(
+        this,
+        new OnFailureListener() {
+          @Override
+          public void onFailure(@NonNull Exception e) {
+            if (e instanceof ResolvableApiException) {
+              // Location settings are not satisfied, but this can be fixed
+              // by showing the user a dialog.
+              try {
+                // Show the dialog by calling startResolutionForResult(),
+                // and check the result in onActivityResult().
+                ResolvableApiException resolvable = (ResolvableApiException) e;
+                resolvable.startResolutionForResult(StartActivity.this, REQUEST_CHECK_SETTINGS);
+              } catch (IntentSender.SendIntentException sendEx) {
+                // Ignore the error.
+              }
+            }
+          }
+        });
 
     toggleSwitch.setOnCheckedChangeListener(
         new CompoundButton.OnCheckedChangeListener() {
