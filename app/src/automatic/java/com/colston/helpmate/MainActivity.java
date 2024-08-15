@@ -613,11 +613,7 @@ public class MainActivity extends ConnectionsActivity {
 
         String connectedNodes = getString(R.string.status_connected);
         for (String node : connectedEndPoints) {
-          connectedNodes =
-              "Hold any of the volume keys to talk\n\n"
-                  + connectedNodes
-                  + " | "
-                  + mEstablishedConnections.get(node).getName();
+          connectedNodes = connectedNodes + " | " + mEstablishedConnections.get(node).getName();
           textView.setBackgroundColor(0xFF4CAF50); /* green */
         }
         if (connectedEndPoints.size() <= 0) {
@@ -698,9 +694,7 @@ public class MainActivity extends ConnectionsActivity {
             logE("Message Discarding since hope ended : " + hope);
           }
         } else {
-          if (isOnDebugMode) {
-            logW("My message received by retransmission....");
-          }
+          logW("My message received by retransmission....");
         }
       }
     }
@@ -817,28 +811,40 @@ public class MainActivity extends ConnectionsActivity {
   @Override
   protected void logW(String msg) {
     super.logW(msg);
-    appendToLogs(toColor(msg, getResources().getColor(R.color.log_warning)));
+
+    if (isOnDebugMode) {
+      appendToLogs(toColor(msg, getResources().getColor(R.color.log_warning)));
+    }
   }
 
   @Override
   protected void logW(String msg, Throwable e) {
     super.logW(msg, e);
-    appendToLogs(
-        toColor(
-            msg + " Error : " + e.getLocalizedMessage(),
-            getResources().getColor(R.color.log_warning)));
+
+    if (isOnDebugMode) {
+      appendToLogs(
+          toColor(
+              msg + " Error : " + e.getLocalizedMessage(),
+              getResources().getColor(R.color.log_warning)));
+    }
   }
 
   @Override
   protected void logE(String msg, Throwable e) {
     super.logE(msg, e);
-    appendToLogs(toColor(msg, getResources().getColor(R.color.log_error)));
+
+    if (isOnDebugMode) {
+      appendToLogs(toColor(msg, getResources().getColor(R.color.log_error)));
+    }
   }
 
   @Override
   protected void logE(String msg) {
     super.logE(msg);
-    appendToLogs(toColor(msg, getResources().getColor(R.color.log_error)));
+
+    if (isOnDebugMode) {
+      appendToLogs(toColor(msg, getResources().getColor(R.color.log_error)));
+    }
   }
 
   /*

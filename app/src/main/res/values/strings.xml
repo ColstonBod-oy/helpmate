@@ -24,7 +24,7 @@
     <string name="toast_disconnected">Disconnected from %s</string>
 
     <string name="status_unknown">Please wait</string>
-    <string name="status_connected">Connected\n</string>
+    <string name="status_connected">Hold any of the volume keys to talk\n\nConnected\n</string>
     <string name="hint_enterUsername">Enter username</string>
     <string name="hint_enterMessage">Enter message</string>
     <string name="hint_enterDestination">Enter destination</string>
