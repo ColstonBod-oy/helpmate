@@ -212,7 +212,7 @@ public class MainActivity extends ConnectionsActivity {
         new View.OnClickListener() {
           @Override
           public void onClick(View v) {
-            String msg = et_msg.getText().toString();
+            String msg = et_msg.getText().toString().trim();
             if (TextUtils.isEmpty(msg) || TextUtils.isEmpty(msg.trim())) {
               et_msg.setError(getString(R.string.err_invalidMsg));
               return;
@@ -666,7 +666,7 @@ public class MainActivity extends ConnectionsActivity {
       String[] message = new String(dataArray).split(":");
       String sourceId = message[0];
       String destId = message[1];
-      String msg = message[2];
+      String msg = message[2].trim();
 
       if (destId.equals("All")) {
         if (!prevMessage.equals(msg)) {
