@@ -668,9 +668,11 @@ public class MainActivity extends ConnectionsActivity {
       String destId = message[1];
       String msg = message[2];
 
-      if (destId.equals("All") && !prevMessage.equals(msg)) {
-        logI(sourceId + ": " + msg);
-        prevMessage = msg;
+      if (destId.equals("All")) {
+        if (!prevMessage.equals(msg)) {
+          logI(sourceId + ": " + msg);
+          prevMessage = msg;
+        }
 
         logD("Hope received : " + hope);
         hope--;
@@ -682,7 +684,11 @@ public class MainActivity extends ConnectionsActivity {
         }
       } else if (destId.equals(mySourceId)) {
         logD("Message received to the correct node with hope = " + hope);
-        logI(sourceId + ": " + msg);
+
+        if (!prevMessage.equals(msg)) {
+          logI(sourceId + ": " + msg);
+          prevMessage = msg;
+        }
       } else {
         if (!sourceId.equals(mySourceId)) {
           logD("Hope received : " + hope);
